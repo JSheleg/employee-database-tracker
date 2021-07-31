@@ -61,14 +61,24 @@ class DB {
 
     viewAllRoles(){
         return this.connection.promise().query(
-            `SELECT * FROM role;`
+            `SELECT role.id, role.title, role.salary, department.name AS department
+            FROM role LEFT JOIN department ON role.department_id = department.id;`
         )
     }
 
     createRole(role){
+        console.log(role)
         return this.connection.promise().query(
             `INSERT INTO role SET?`, role,
             console.log(role.title + " role added")
+        )
+    }
+
+    removeRole(roleId){
+        console.log(roleId)
+        return this.connection.promise().query(
+            "DELETE FROM role WHERE id =?",roleId, 
+            console.log( "role has been deleted")
         )
     }
 
@@ -91,7 +101,12 @@ class DB {
         return this.connection.promise().query("INSERT INTO employee SET?", employee)
     }
 
-    // removeEmployee(employee_id)
+    removeEmployees(param){
+        return this.connection.promise().query(
+            "DELETE FROM employee WHERE id = ?", param,
+            console.log("employee deleted")
+        )
+    }
 
 }
 

@@ -27,10 +27,10 @@ function loadMainPrompt() {
                     name: "See All Employees By Department",
                     value: "SEE_EMPLOYEES_BY_DEPARTMENT"
                 },
-                {
-                    name: "See All Employees By Manager",
-                    value: "SEE_EMPLOYEES_BY_MANAGER"
-                },
+                // {
+                //     name: "See All Employees By Manager",
+                //     value: "SEE_EMPLOYEES_BY_MANAGER"
+                // },
                 {
                     name: "Add Employee",
                     value: "ADD_EMPLOYEE"
@@ -43,10 +43,10 @@ function loadMainPrompt() {
                     name: "Update Employee Role",
                     value: "UPDATE_EMPLOYEE_ROLE"
                 },
-                {
-                    name: "Update Employee Manager",
-                    value: "UPDATE_EMPLOYEE_MANAGER"
-                },
+                // {
+                //     name: "Update Employee Manager",
+                //     value: "UPDATE_EMPLOYEE_MANAGER"
+                // },
                 {
                     name: "See All Roles",
                     value: "SEE_ALL_ROLES"
@@ -59,14 +59,14 @@ function loadMainPrompt() {
                     name: "Add Role",
                     value: "ADD_ROLE"
                 },
-                {
-                    name: "Update Role by Salary",
-                    value: "UPDATE_ROLE_BY_SALARY"
-                },
-                {
-                    name: "View Annually budgeted salary",
-                    value: "VIEW_ANNUALLY_BUDGETED_SALARY"
-                },
+                // {
+                //     name: "Update Role by Salary",
+                //     value: "UPDATE_ROLE_BY_SALARY"
+                // },
+                // {
+                //     name: "View Annually budgeted salary",
+                //     value: "VIEW_ANNUALLY_BUDGETED_SALARY"
+                // },
                 {
                     name: "See All Departments",
                     value: "SEE_ALL_DEPARTMENTS"
@@ -78,6 +78,10 @@ function loadMainPrompt() {
                 {
                     name: "Remove Department",
                     value: "REMOVE_DEPARTMENT"
+                },
+                {
+                    name: "Quit",
+                    value: "QUIT"
                 }
             ]
             
@@ -94,10 +98,10 @@ function loadMainPrompt() {
             case "SEE_EMPLOYEES_BY_DEPARTMENT":
                 seeEmployeesByDepartment();
                 break;
-            case "SEE_EMPLOYEES_BY_MANAGER":
-                //struggling to get this one to work
-                seeEmployeesByManager();
-                break;
+            // case "SEE_EMPLOYEES_BY_MANAGER":
+            //     //struggling to get this one to work
+            //     seeEmployeesByManager();
+            //     break;
             case "ADD_EMPLOYEE":
                 //progress made, still funky
                 addEmployee();
@@ -108,9 +112,9 @@ function loadMainPrompt() {
             case "REMOVE_EMPLOYEE":
                 removeEmployee();
                 break;
-            case "UPDATE_EMPLOYEE_MANAGER":
-                updateEmployeeManager();
-                break;
+            // case "UPDATE_EMPLOYEE_MANAGER":
+            //     updateEmployeeManager();
+            //     break;
             case "SEE_ALL_ROLES":
                 seeAllRoles();
                 break;
@@ -121,12 +125,12 @@ function loadMainPrompt() {
             case "REMOVE_ROLE":
                 removeRole();
                 break;
-            case "UPDATE_ROLE_BY_SALARY":
-                updateRoleBySalary();
-                break;
-            case "VIEW_ANNUALLY_BUDGETED_SALARY":
-                viewAnnuallyBudgetedSalary();
-                break;
+            // case "UPDATE_ROLE_BY_SALARY":
+            //     updateRoleBySalary();
+            //     break;
+            // case "VIEW_ANNUALLY_BUDGETED_SALARY":
+            //     viewAnnuallyBudgetedSalary();
+            //     break;
             case "SEE_ALL_DEPARTMENTS":
                 seeAllDepartments();
                 break;
@@ -136,6 +140,8 @@ function loadMainPrompt() {
             case "REMOVE_DEPARTMENT":
                 removeDepartment();
                 break;
+            case "QUIT":
+                quitProgram();
             default:
                 quitProgram();      
         }
@@ -177,32 +183,32 @@ function seeEmployeesByDepartment(){
 }
 
 
-function seeEmployeesByManager(){
-    db.viewAllManagers().then(([res])=> {
-        // console.table(res);
-        let choices = res.map(choice => choice.manager);
-        console.log(choices)
+// function seeEmployeesByManager(){
+//     db.viewAllManagers().then(([res])=> {
+//         // console.table(res);
+//         let choices = res.map(choice => choice.manager);
+//         console.log(choices)
 
-        prompt([
-            {
-                type: "list",
-                name: "choices",
-                message: "Which manager's employees would you like to see?",
-                choices: choices
-            }
-        ]).then(res => {
+//         prompt([
+//             {
+//                 type: "list",
+//                 name: "choices",
+//                 message: "Which manager's employees would you like to see?",
+//                 choices: choices
+//             }
+//         ]).then(res => {
             
-            let param = res.choices
-            // console.log(param + " choices");
-            // db.selectAllEmployeesByManager([param]).then(([res]) => {
-                console.table(param)
+//             let param = res.choices
+//             // console.log(param + " choices");
+//             // db.selectAllEmployeesByManager([param]).then(([res]) => {
+//                 console.table(param)
 
-            // })
+//             // })
             
             
-        })
-    })
-}
+//         })
+//     })
+// }
 
 function addEmployee(){
     prompt([
@@ -275,6 +281,35 @@ function addEmployee(){
     //append to employee
 }
 
+function removeEmployee(){
+    db.viewAllEmployees()
+    .then(([rows]) =>{
+        let employees = rows;
+        console.log(employees)
+        
+        const employeeSelection = employees.map(({id,first_name, last_name})=> ({
+            name: `${first_name} ${last_name}`,
+            value: `${id}`
+        }))
+        console.log(employeeSelection);
+    
+
+        prompt({
+            type: "list",
+            name: "employeeId",
+            message: "Which employee would you like to remove?",
+            choices: employeeSelection
+        })
+        .then(res => {
+            console.log(res.employeeId)
+            param = res.employeeId;
+            console.log(param + " id to delete")
+            db.removeEmployees(param);
+            loadMainPrompt();
+        })
+    })
+}
+
 function seeAllDepartments(){
     db.viewAllDepartments().then(([res]) => {
         console.table(res)
@@ -325,17 +360,15 @@ function seeAllRoles(){
 }
 
 function addRole(){
-    db.viewAllRoles().then(([rows]) => {
-        let roles = rows;
-        console.log(roles)
-        const currentRoles = roles.map(({id, title, salary, department_id}) =>({
-            value: id,
-            title: `${title}`,
-            salary:`${salary}`,
-            department_id: `${department_id}`
+    db.viewAllDepartments().then(([rows]) => {
+        let departments = rows;
+        console.log(departments)
+        const currentDepartment = departments.map(({id,name}) =>({
+            value: `${name}`,
+            department_id: `${id}`,
             
         }));
-        // console.table(currentRoles +" vadfa")
+        // console.log(currentRoles +" vadfa")
         prompt([
             {
                name: 'title',
@@ -348,16 +381,21 @@ function addRole(){
                 message: 'What is the annual salary for this role?'
             },
             {
-                name: 'departmentId',
+                name: 'department',
                 type: 'list',
-                choices: currentRoles,
+                choices: currentDepartment,
                 message: 'What department Id does this role belong to?',
             }
         ]).then(res => {
+            console.log(currentDepartment)
+            console.log(JSON.stringify(res, null, 2) + " res");
+            const department_id = currentDepartment.find((dept)=> dept.value === res.department).department_id
+            console.log(JSON.stringify(department_id, null, 2) + " dept id");
+            // console.log(department_id.department_id + " depts id");
             let role = {
                 title: res.title,
                 salary: res.salary,
-                department_id: res.departmentId
+                department_id: department_id
             }
             db.createRole(role)
             .then(()=> loadMainPrompt())
@@ -365,41 +403,26 @@ function addRole(){
     })
 }
 
-
-
-
-
-// function addDepartment(){
-//     //prompt {name}
-//     // db.findAllDepartments()
-//     // .then(createDepartment())
-
-// }
-
-// function removeDepartment(){
-//     db.findAllDepartments()
-//         .then(([rows])=> {
-//             let departments = rows;
-//             const departmentChoices = departments.map(({id,name})=>({
-//                 name:name,
-//                 value:id
-//             }))
-        
+function removeRole(){
+    db.viewAllRoles().then(([rows]) => {
+        let currentRoles = rows;
+        const roleSelection = currentRoles.map(({id,title, salary, department}) => ({
+            name: `${title} ${salary} ${department}`,
+            value: `${id}`
+        }))
+        console.log(roleSelection);
+        prompt({
+            type: "list",
+            name: "roleId",
+            message: "Which role do you want to remove?",
+            choices: roleSelection
+        })
+        .then(res => db.removeRole(res.roleId))
+        .then(()=> loadMainPrompt())
+    })
     
-//         prompt({
-//             type: "list",
-//             name: "departmentId",
-//             message: "Which department would you like to remove?",
-//             choices: departmentChoices
-//         })
-//             .then(res => db.removeDepartment(res.departmentId))
-//             .then(()=> console.log(`Removed department from database`))
-//             .then(()=> loadMainPrompt())
-//         });
-// }
-
-
-
+}
 function quitProgram(){
+    console.log("Goodbye")
     process.exit();
 }
