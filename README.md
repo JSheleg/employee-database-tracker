@@ -5,7 +5,8 @@
 Command terminal application that uses `node`, `express`, and `MySql` and allows a user to keep track of the employees in their company.
 
 
-![programStart]()
+![programStart](https://github.com/JSheleg/employee-database-tracker/blob/main/assets/img/EmployeeTrackerCover.JPG)
+![programQuery](https://github.com/JSheleg/employee-database-tracker/blob/main/assets/img/ETrackerSearch.JPG)
 
 ## Table of Contents:
 
