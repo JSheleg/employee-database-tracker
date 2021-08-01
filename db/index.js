@@ -8,7 +8,7 @@ class DB {
 
     viewAllEmployees(){
         return this.connection.promise().query(
-            // console.log("entered query")
+            
             `SELECT employee.id,
             employee.first_name,
             employee.last_name,
@@ -87,8 +87,6 @@ class DB {
             FROM role LEFT JOIN department ON role.department_id = department.id;`
         )
     }
-
-
 
     createRole(role){
         // console.log(role)
