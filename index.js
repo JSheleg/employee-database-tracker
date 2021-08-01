@@ -1,5 +1,5 @@
 const{prompt} = require("inquirer");
-const { createDepartment, connection } = require("./db");
+const { createDepartment, connection, viewAllEmployees } = require("./db");
 // const logo = reuire("asciiart-logo");
 const db = require("./db");
 require("console.table");
@@ -308,6 +308,63 @@ function removeEmployee(){
             loadMainPrompt();
         })
     })
+}
+
+
+function updateEmployeeRole(){
+    db.viewEmployeeTable()
+    .then(([res]) =>{
+        let employees = res;
+        console.log(employees)
+        const employeeSelection = employees.map(({id, first_name, last_name, role_id}) => ({
+            value: `${id}`,
+            name: `${first_name} ${last_name}`,
+            role_id: `${role_id}`
+        }));
+
+        prompt(
+            {
+                type: "list",
+                name: "employee",
+                message: "Which employee would you like to update?",
+                choices: employeeSelection
+            }
+        )
+        .then(res => {
+            let employeeId = res.employee;
+            
+            db.viewRoleTable()
+                .then(([response])=> {
+                    let roles = response;
+                    console.log(roles)
+                    const roleSelection = roles.map(({id,title, salary, department_id}) =>({
+                        value: `${title}`,
+                        id: `${id}`,
+                        salary: `${salary}`,
+                        department_id: `${department_id}`
+                    }));
+
+                    prompt(
+                        {
+                            type: "list",
+                            name: "roleId",
+                            message: "What is the employees new role?",
+                            choices: roleSelection
+                        }
+                    )
+                    .then(res => {
+                        console.log(roleSelection)
+                        const role_id = roleSelection.find((role)=> role.value === res.roleId).id
+                        console.log(role_id + " role_id");
+                        db.updateEmployeeRole(employeeId, role_id)
+                        .then(()=> loadMainPrompt());
+                    })
+                })
+        })
+    })
+        
+
+    
 }
 
 function seeAllDepartments(){

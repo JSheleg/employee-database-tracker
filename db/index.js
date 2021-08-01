@@ -23,6 +23,22 @@ class DB {
         );
     }
 
+    viewEmployeeTable(){
+        return this.connection.promise().query(
+            `SELECT * FROM employee`
+        )
+        
+    }
+
+    updateEmployeeRole(employeeId, role_id){
+        return this.connection.promise().query(
+            `UPDATE employee 
+            SET role_id = "${role_id}"       
+            WHERE id = "${employeeId}"; `,
+            console.log("ROLE UPDATED")
+        )
+    }
+
     viewAllManagers(){
         return this.connection.promise().query(
             `SELECT employee.id, employee.first_name AS manager
@@ -59,12 +75,20 @@ class DB {
     }
     
 
+    viewRoleTable(){
+        return this.connection.promise().query(
+            `SELECT * FROM role`
+        )
+    }
+
     viewAllRoles(){
         return this.connection.promise().query(
             `SELECT role.id, role.title, role.salary, department.name AS department
             FROM role LEFT JOIN department ON role.department_id = department.id;`
         )
     }
+
+
 
     createRole(role){
         console.log(role)
