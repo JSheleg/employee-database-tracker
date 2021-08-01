@@ -91,7 +91,7 @@ class DB {
 
 
     createRole(role){
-        console.log(role)
+        // console.log(role)
         return this.connection.promise().query(
             `INSERT INTO role SET?`, role,
             console.log(role.title + " role added")
@@ -99,7 +99,7 @@ class DB {
     }
 
     removeRole(roleId){
-        console.log(roleId)
+        // console.log(roleId)
         return this.connection.promise().query(
             "DELETE FROM role WHERE id =?",roleId, 
             console.log( "role has been deleted")
@@ -135,25 +135,3 @@ class DB {
 }
 
 module.exports = new DB(connection);
-
-
-//View roles by department
-// SELECT role. *, department.name AS department FROM role LEFT JOIN department ON role.department_id = department.id; 
-
-//VIEW employees by department
-// SELECT employee.id, employee.first_name, employee.last_name, department.name AS department FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id; 
-
-//query for department
-// SELECT * FROM employee where title = "param";
-
-// SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name, employee.manager_id
-// -> FROM employee
-// -> INNER JOIN role ON employee.role_id = role.id
-// -> INNER JOIN department ON role.department_id = department.id
-// -> WHERE department.name = "Sales";
-
-
-//managers for employee
-// SELECT CONCAT(manager.first_name, ' ',manager.last_name) AS manager, employee.first_name, employee.last_name
-//     -> FROM employee
-//     -> LEFT JOIN employee manager on manager.id = employee.manager_id;
