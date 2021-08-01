@@ -98,10 +98,10 @@ This project is licensed under MIT
 
 ## Questions
 * Created by Jessica Sheleg
-* [Project Repository]()
-* [GitHub Portfolio]()
+* [Project Repository](https://github.com/JSheleg/employee-database-tracker)
+* [GitHub Portfolio](https://github.com/JSheleg)
 
 
 ## Walk Through
-To view the program in action: [Screencastify]()
+To view the program in action: [Screencastify](https://drive.google.com/file/d/1ZbHn-C_D-7CRUgTC7pCRBKbLwRTW4kgV/view)
 
