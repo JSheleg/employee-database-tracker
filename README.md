@@ -78,6 +78,11 @@ Command terminal application that uses `node`, `express`, and `MySql` and allows
     `npm start` or `node index.js`
 * To quit the program:
     There is a quit option listed in the menu. 
+* Login in to MySql
+    Update connection.js with password
+    Run `mysql -u root -p ` in terminal and input password
+* Run Schema and seed data
+    `source db/schema.sql` and `source db/seeds.sql`
 
 ## Features
 With this program you can manipulate the data for `Employees`, `Departments` and `Roles`
